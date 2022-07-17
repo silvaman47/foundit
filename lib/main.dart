@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foundit/onboarding.dart';
+import 'package:foundit/screens/onboarding/onboarding.dart';
 
 void main() {
   runApp(const Foundit());

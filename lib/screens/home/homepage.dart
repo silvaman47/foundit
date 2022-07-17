@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:foundit/complain_page.dart';
-import 'package:foundit/profilepage.dart';
+import 'package:foundit/screens/complain/complain_page.dart';
+import 'package:foundit/screens/complain/profile/profilepage.dart';
+import 'package:foundit/screens/item/itemscreen.dart';
 import "package:http/http.dart" as http;
 import "dart:convert" as convert;
 
 import 'package:latlong2/latlong.dart';
+
+import '../profile/profilepage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -48,7 +51,16 @@ class _HomepageState extends State<Homepage> {
               backgroundColor: Colors.red,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add),
+              icon: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ItemScreen(),
+                      ),
+                    );
+                  },
+                  child: Icon(Icons.add)),
               label: 'Item',
               backgroundColor: Colors.red,
             ),
@@ -76,7 +88,7 @@ class _HomepageState extends State<Homepage> {
             FlutterMap(
               options: new MapOptions(
                   center: tomtomHQ,
-                  zoom: 13.0,
+                  zoom: 18.0,
                   onTap: (value, newLat) {
                     setState(() {
                       tomtomHQ = newLat;

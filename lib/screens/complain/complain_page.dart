@@ -58,8 +58,12 @@ class _ComplainPageState extends State<ComplainPage> {
                 height: 40,
               ),
               Row(
-                children: [Text('Location'),
-                
+                children: [
+                  Text('Location'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  
                 ],
               )
             ],

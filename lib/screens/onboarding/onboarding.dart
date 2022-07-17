@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore
 
 import 'package:flutter/material.dart';
-import 'package:foundit/signup.dart';
+import 'package:foundit/screens/complain/profile/signup/signup.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+
+import '../signup/signup.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({Key? key}) : super(key: key);
