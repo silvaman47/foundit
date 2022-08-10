@@ -5,8 +5,9 @@ class Complaint {
   double? latitude;
   double? longitude;
   String? status;
-  String? time;
+  DateTime? dateTime;
   String? image;
+  String? location;
 
   Complaint(
       {this.description,
@@ -15,6 +16,7 @@ class Complaint {
       this.longitude,
       this.status,
       this.user,
-      this.time,
+      this.dateTime,
+      this.location,
       this.image});
 }

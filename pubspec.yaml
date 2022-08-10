@@ -25,6 +25,7 @@ dependencies:
   flutter_map: ^1.0.0
   http: ^0.13.4
   latlong2: ^0.8.1
+  dart_date: ^1.1.1
 
   
 

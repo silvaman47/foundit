@@ -63,9 +63,24 @@ class _ComplainPageState extends State<ComplainPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  
                 ],
-              )
+              ),
+              SizedBox(
+                height: 80,
+              ),
+              Row(
+                children: [
+                  Text('Time Lost'),
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                children: [
+                  Text('Date')
+                ],
+              ),
             ],
           ),
         ),
