@@ -1,16 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
 
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foundit/components/custom_dialog.dart';
+import 'package:foundit/screens/home/homepage.dart';
 import 'package:foundit/screens/login/loginpage.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
 
-//  TextEditingController emailController = new TextEditingController();
-  //TextEditingController passwordController = new TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
+    final auth = FirebaseAuth.instance;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -61,6 +67,8 @@ class Signup extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                   child: TextField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     key: key,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -88,6 +96,8 @@ class Signup extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                   child: TextField(
+                    keyboardType: TextInputType.visiblePassword,
+                    controller: passwordController,
                     key: key,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -98,14 +108,32 @@ class Signup extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                  height: 60,
-                  width: 400,
-                  child: Center(child: Text('Create Account')),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(8),
+                GestureDetector(
+                  onTap: () {
+                    try {
+                      auth.createUserWithEmailAndPassword(
+                          email: emailController.text.trim(),
+                          password: passwordController.text);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) => Homepage()));
+                    } on FirebaseAuthException catch (e) {
+                      log(e.toString());
+                      CustomDialog(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          content: e.toString());
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                    height: 60,
+                    width: 400,
+                    child: Center(child: Text('Create Account')),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
                 SizedBox(

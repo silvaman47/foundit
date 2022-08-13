@@ -1,11 +1,23 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_local_variable
 
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foundit/components/custom_dialog.dart';
 import 'package:foundit/screens/home/homepage.dart';
 
-class Loginpage extends StatelessWidget {
+class Loginpage extends StatefulWidget {
   const Loginpage({Key? key}) : super(key: key);
 
+  @override
+  State<Loginpage> createState() => _LoginpageState();
+}
+
+class _LoginpageState extends State<Loginpage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +70,7 @@ class Loginpage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                 child: TextField(
-                  key: key,
+                  controller: emailController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
@@ -85,7 +97,7 @@ class Loginpage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                 child: TextField(
-                  key: key,
+                  controller: passwordController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
@@ -100,15 +112,29 @@ class Loginpage extends StatelessWidget {
                 height: 60,
                 width: 400,
                 child: Center(
-                  child: InkWell(
-                    child: Text('Login'),
-                    onTap: (){
-                           Navigator.push(context, MaterialPageRoute(
-                           builder: (context) => const Homepage(),
-                           ),
-                      );
-                        },)
-                    ),
+                    child: InkWell(
+                  child: Text('Login'),
+                  onTap: () {
+                    try {
+                      auth.signInWithEmailAndPassword(
+                          email: emailController.text.trim(),
+                          password: passwordController.text);
+                    } on FirebaseAuthException catch (e) {
+                      log(e.toString());
+                      CustomDialog(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          content: e.toString());
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Homepage(),
+                      ),
+                    );
+                  },
+                )),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(8),

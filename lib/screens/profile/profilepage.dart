@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'dart:io';
 
@@ -47,8 +47,8 @@ class Profilepage extends StatelessWidget {
                 radius: 80,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+            Container(
+              margin: EdgeInsets.only(bottom: 30),
               child: FloatingActionButton(
                   child: Icon(Icons.add_a_photo_outlined),
                   onPressed: _openImagePicker),
@@ -63,7 +63,16 @@ class Profilepage extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-               
+                Container(
+                  width: 290,
+                  height: 50,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Name',
+                    ),
+                  ),
+                ),
               ],
             ),
             SizedBox(
@@ -74,7 +83,22 @@ class Profilepage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(30.0),
-                  child: Text('Phone No'),
+                  child: Text('Number'),
+                ),
+                SizedBox(
+                  width: 0,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(right: 20),
+                  width: 290,
+                  height: 50,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Number',
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -87,6 +111,31 @@ class Profilepage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: Text('Email'),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: 290,
+                  height: 50,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              // ignore: prefer_const_literals_to_create_immutables
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Text('About'),
                 ),
               ],
             )

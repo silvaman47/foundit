@@ -24,6 +24,7 @@ class _ComplainPageState extends State<ComplainPage> {
       setState(() {
         _image = File(pickedImage.path);
       });
+      
     }
   }
 
