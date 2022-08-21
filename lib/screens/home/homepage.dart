@@ -105,7 +105,7 @@ class _HomepageState extends State<Homepage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (ctx) => ComplainPage()));
+                                      builder: (ctx) => ComplainPage(latlong: tomtomHQ)));
                             },
                             child: Text("Yes"),
                           ),

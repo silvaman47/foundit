@@ -3,29 +3,42 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/models/complain_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../components/custom_dialog.dart';
 import '../item_screen/itemscreen.dart';
 
 class ComplainPage extends StatefulWidget {
-  const ComplainPage({Key? key}) : super(key: key);
-
+  const ComplainPage({
+    Key? key,
+    required this.latlong,
+  }) : super(key: key);
+  final LatLng latlong;
   @override
   State<ComplainPage> createState() => _ComplainPageState();
 }
 
 class _ComplainPageState extends State<ComplainPage> {
   File? _image;
-
+  String? imageUrl;
   final _picker = ImagePicker();
-
-  get db => null;
+  TextEditingController locationController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeLostController = TextEditingController();
+  DateTime? lostDate;
   // Implementing the image picker
   Future<void> _openImagePicker() async {
+    // await Permission.photos.request();
+    // var permissionStatus = await Permission.photos.status;
+
     final XFile? pickedImage =
         await _picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
@@ -35,6 +48,22 @@ class _ComplainPageState extends State<ComplainPage> {
     }
   }
 
+  uploadImage(File? image) async {
+    final _firebaseStorage = FirebaseStorage.instance;
+    if (image != null) {
+      //Upload to Firebase
+      var snapshot = await _firebaseStorage.ref().putFile(image);
+      //image fetched
+      var downloadUrl = await snapshot.ref.getDownloadURL();
+      setState(() {
+        imageUrl = downloadUrl;
+      });
+    } else {
+      print('No Image Path Received');
+    }
+  }
+
+  final auth = FirebaseAuth.instance;
   var size, height, width;
 
   @override
@@ -42,7 +71,7 @@ class _ComplainPageState extends State<ComplainPage> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-
+    final db = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Complain'),
@@ -103,6 +132,7 @@ class _ComplainPageState extends State<ComplainPage> {
                   width: double.infinity,
                   height: 40,
                   child: TextField(
+                    controller: descriptionController,
                     decoration: InputDecoration(border: OutlineInputBorder()),
                   ),
                 ),
@@ -122,6 +152,19 @@ class _ComplainPageState extends State<ComplainPage> {
                   width: double.infinity,
                   height: 40,
                   child: TextField(
+                    readOnly: true,
+                    onTap: (() {
+                      showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2007),
+                              lastDate: DateTime.now())
+                          .then((value) {
+                        setState(() {
+                          lostDate = value;
+                        });
+                      });
+                    }),
                     decoration: InputDecoration(border: OutlineInputBorder()),
                   ),
                 ),
@@ -150,31 +193,31 @@ class _ComplainPageState extends State<ComplainPage> {
                 GestureDetector(
                   onTap: () async {
                     try {
-                      // Create a new user with a first and last name
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => ItemScreen()));
-                      //
-                      final user = Complaint(
-                        user: '',
-                        image: '',
-                        location: '',
-                        status: '',
-                        description: '',
-                        latitude: null,
-                        longitude: null,
-                        dateTime: null,
+                      uploadImage(_image);
+                      final complaint = Complaint(
+                        owner: '',
+                        image: imageUrl,
+                        location: locationController.text.trim(),
+                        status: 'lost',
+                        description: descriptionController.text.trim(),
+                        latitude: widget.latlong.latitude,
+                        longitude: widget.latlong.longitude,
+                        dateTime: lostDate ?? DateTime.now(),
                         finders: [],
                       );
-                      var emailController;
+                      // var emailController;
                       final docRef = db
-                          .collection("users")
+                          .collection("complaints")
                           .withConverter(
                             fromFirestore: Complaint.fromFirestore,
-                            toFirestore: (Complaint user, options) =>
-                                user.toFirestore(),
+                            toFirestore: (Complaint complaint, options) =>
+                                complaint.toFirestore(),
                           )
-                          .doc(emailController.text.trim());
-                      await docRef.set(user);
+                          .doc(auth.currentUser!.email);
+                      await docRef.set(complaint);
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) => ItemScreen()));
                     } on FirebaseAuthException catch (e) {
                       log(e.toString());
                       CustomDialog(
@@ -185,7 +228,7 @@ class _ComplainPageState extends State<ComplainPage> {
                     }
                   },
                   child: Container(
-                   // margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                    // margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                     height: 60,
                     width: double.infinity,
                     child: Center(child: Text('Submit')),
