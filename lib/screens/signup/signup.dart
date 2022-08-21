@@ -2,9 +2,11 @@
 
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/components/custom_dialog.dart';
+import 'package:foundit/models/user_model.dart';
 import 'package:foundit/screens/home/homepage.dart';
 import 'package:foundit/screens/login/loginpage.dart';
 
@@ -17,6 +19,7 @@ class Signup extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
 
     final auth = FirebaseAuth.instance;
+    final db = FirebaseFirestore.instance;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -109,13 +112,31 @@ class Signup extends StatelessWidget {
                   height: 40,
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     try {
+                      // Create a new user with a first and last name
+
                       auth.createUserWithEmailAndPassword(
                           email: emailController.text.trim(),
-                          password: passwordController.text);
+                          password: passwordController.text.trim());
                       Navigator.push(context,
                           MaterialPageRoute(builder: (ctx) => Homepage()));
+                      //
+                      final user = UserModel(
+                        name: '',
+                        image: '',
+                        location: '',
+                        complaints: [],
+                      );
+                      final docRef = db
+                          .collection("users")
+                          .withConverter(
+                            fromFirestore: UserModel.fromFirestore,
+                            toFirestore: (UserModel user, options) =>
+                                user.toFirestore(),
+                          )
+                          .doc(emailController.text.trim());
+                      await docRef.set(user);
                     } on FirebaseAuthException catch (e) {
                       log(e.toString());
                       CustomDialog(

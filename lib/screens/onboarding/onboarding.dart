@@ -12,6 +12,12 @@ class Onboarding extends StatelessWidget {
   Widget build(BuildContext context) => SafeArea(
         // ignore: duplicate_ignore
         child: IntroductionScreen(
+          skip: TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Signup()));
+              },
+              child: Text('Skip')),
           showNextButton: false,
           pages: [
             PageViewModel(
@@ -39,9 +45,8 @@ class Onboarding extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onDone: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => const Signup())
-            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Signup()));
           },
         ),
       );
