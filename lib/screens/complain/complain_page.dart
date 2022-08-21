@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
 import 'dart:io';
@@ -35,8 +35,14 @@ class _ComplainPageState extends State<ComplainPage> {
     }
   }
 
+  var size, height, width;
+
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Complain'),
@@ -57,63 +63,89 @@ class _ComplainPageState extends State<ComplainPage> {
                 Container(
                   alignment: Alignment.center,
                   width: double.infinity,
-                  height: 300,
+                  height: 220,
                   color: Colors.grey[300],
                   child: _image != null
-                      ? Image.file(_image!, fit: BoxFit.cover)
+                      ? Image.file(_image!, fit: BoxFit.contain)
                       : const Text('Please select an image'),
                 ),
                 SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  children: [
-                    Text('Location'),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                      width: 200,
-                      height: 30,
-                      child: TextField(
-                        decoration: InputDecoration(border: OutlineInputBorder()),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 80,
-                ),
-                Row(
-                  children: [
-                    Text('Time Lost'),
-                    Container(
-                      margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                      width: 50,
-                      height: 30,
-                      child: TextField(
-                        decoration: InputDecoration(border: OutlineInputBorder()),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  children: [Text('Date')],
-                ),
-                SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                  width: 50,
-                  height: 30,
+                  margin: EdgeInsets.only(right: 280),
+                  child: Text(
+                    'Location',
+                  ),
+                ),
+                SizedBox(
+                  // margin: EdgeInsets.only(right: 290),
+                  //  padding: EdgeInsets.symmetric(horizontal: 100),
+                  width: double.infinity,
+                  height: 40,
                   child: TextField(
                     decoration: InputDecoration(border: OutlineInputBorder()),
                   ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
+                  // margin: EdgeInsets.only(right: 280),
+                  child: Text(
+                    'Description',
+                  ),
+                ),
+                SizedBox(
+                  // margin: EdgeInsets.only(right: 290),
+                  //  padding: EdgeInsets.symmetric(horizontal: 100),
+                  width: double.infinity,
+                  height: 40,
+                  child: TextField(
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
+                  //margin: EdgeInsets.only(right: 280),
+                  child: Text(
+                    'Date',
+                  ),
+                ),
+                SizedBox(
+                  // margin: EdgeInsets.only(right: 290),
+                  //  padding: EdgeInsets.symmetric(horizontal: 100),
+                  width: double.infinity,
+                  height: 40,
+                  child: TextField(
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
+                  //margin: EdgeInsets.only(right: 280),
+                  child: Text(
+                    'Time Lost',
+                  ),
+                ),
+                SizedBox(
+                  // margin: EdgeInsets.only(right: 290),
+                  //  padding: EdgeInsets.symmetric(horizontal: 100),
+                  width: double.infinity,
+                  height: 40,
+                  child: TextField(
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -153,9 +185,9 @@ class _ComplainPageState extends State<ComplainPage> {
                     }
                   },
                   child: Container(
-                    margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                   // margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                     height: 60,
-                    width: 400,
+                    width: double.infinity,
                     child: Center(child: Text('Submit')),
                     decoration: BoxDecoration(
                       color: Colors.blue,
