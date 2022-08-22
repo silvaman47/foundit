@@ -17,6 +17,8 @@ class Signup extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController numberController = TextEditingController();
 
     final auth = FirebaseAuth.instance;
     final db = FirebaseFirestore.instance;
@@ -52,6 +54,38 @@ class Signup extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 30,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40),
+                      child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage:
+                              AssetImage('assets/images/appsplash.png')),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Container(
+                      width: 240,
+                      child: TextFormField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Name',
+                        ),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: <Widget>[
@@ -111,6 +145,25 @@ class Signup extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
+                Container(
+                  padding: EdgeInsets.only(right: 250),
+                  child: Text('Number',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                  // width: 500,
+                  child: TextField(
+                    controller: numberController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Number',
+                    ),
+                  ),
+                ),
                 GestureDetector(
                   onTap: () async {
                     try {
@@ -160,16 +213,6 @@ class Signup extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                  height: 60,
-                  width: 400,
-                  child: Center(child: Text('Sign up with Google')),
-                  decoration: BoxDecoration(
-                    color: Colors.amber,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
                 SizedBox(
                   height: 50,
                 ),
@@ -197,6 +240,19 @@ class Signup extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 30,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Homepage(),
+                        ),
+                      );
+                    },
+                    child: Text('Skip'))
               ],
             )
           ],

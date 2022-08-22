@@ -12,6 +12,7 @@ class Onboarding extends StatelessWidget {
   Widget build(BuildContext context) => SafeArea(
         // ignore: duplicate_ignore
         child: IntroductionScreen(
+          showSkipButton: true,
           skip: TextButton(
               onPressed: () {
                 Navigator.push(context,

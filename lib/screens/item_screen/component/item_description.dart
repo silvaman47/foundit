@@ -45,7 +45,7 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
           Container(
             margin: EdgeInsets.only(right: 70),
             padding: EdgeInsets.fromLTRB(10, 10, 200, 10),
-            child: Text(widget.lostItem.user!),
+            child: Text(widget.lostItem.owner!),
           ),
           SizedBox(
             height: 20,
