@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.foundit">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
    <application
         android:label="foundit"
         android:name="${applicationName}"
@@ -34,5 +35,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+             
     </application>
 </manifest>

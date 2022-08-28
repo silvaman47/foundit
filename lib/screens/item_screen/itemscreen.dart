@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -68,21 +69,45 @@ class _ItemScreenState extends State<ItemScreen> {
         location: 'KUST SCHOOL PATRK'),
   ];
 
+  final Stream<QuerySnapshot> _complaintStream =
+      FirebaseFirestore.instance.collection('complaints').snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lost Items'),
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          ...List.generate(
-            demoComplaints.length,
-            (index) => LostItemCard(lostItem: demoComplaints[index]),
-          ),
-        ],
-      )),
-    );
+        appBar: AppBar(
+          title: Text('Lost Items'),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: _complaintStream,
+          builder: ((context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+            
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading");
+            }
+            return SingleChildScrollView(
+              child: Column(
+                children: snapshot.data!.docs
+                    .map((DocumentSnapshot document) {
+                      // Map<String, dynamic> data =
+                      //     document as Map<String, dynamic>;
+                      return LostItemCard(lostItem: document.data());
+                    })
+                    .toList()
+                    .cast(),
+                // [
+                //   ...List.generate(
+                //     demoComplaints.length,
+                //     (index) => LostItemCard(lostItem: demoComplaints[index]),
+                //   ),
+                // ],
+              ),
+            );
+          }),
+        ));
   }
 }
