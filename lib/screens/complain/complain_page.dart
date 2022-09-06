@@ -58,6 +58,7 @@ class _ComplainPageState extends State<ComplainPage> {
       //Upload to Firebase
       try {
         await ref.putFile(image);
+        print('uploaded');
         //image fetched
         // await imageRef.getDownloadURL();
         // setState(() {
