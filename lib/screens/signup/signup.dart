@@ -93,7 +93,7 @@ class Signup extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 10, left: 50),
+                      margin: EdgeInsets.only(left: 40),
                       child: Text(
                         'Your Email',
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -105,7 +105,8 @@ class Signup extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                  height: MediaQuery.of(context).size.height * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.80,
                   child: TextField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -117,12 +118,12 @@ class Signup extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 10, left: 50),
+                      margin: EdgeInsets.only(left: 40),
                       child: Text(
                         'Password',
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -134,7 +135,8 @@ class Signup extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                  height: MediaQuery.of(context).size.height * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.80,
                   child: TextField(
                     keyboardType: TextInputType.visiblePassword,
                     controller: passwordController,
@@ -146,18 +148,21 @@ class Signup extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Container(
-                  padding: EdgeInsets.only(right: 250),
-                  child: Text('Number',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  margin: EdgeInsets.only(right: 260),
+                  child: Text(
+                    'Number',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                  height: MediaQuery.of(context).size.height * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.80,
                   // width: 500,
                   child: TextField(
                     controller: numberController,
@@ -206,10 +211,11 @@ class Signup extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                    height: 60,
-                    width: 400,
-                    child: Center(child: Text('Create Account')),
+                    height: MediaQuery.of(context).size.height * 0.10,
+                    width: MediaQuery.of(context).size.width * 0.80,
+                    child: Center(
+                      child: Text('Create Account'),
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(8),

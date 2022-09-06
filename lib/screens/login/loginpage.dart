@@ -56,7 +56,7 @@ class _LoginpageState extends State<Loginpage> {
               Row(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 50),
+                    margin: EdgeInsets.only(left: 40),
                     child: Text(
                       'Your Email',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -68,7 +68,8 @@ class _LoginpageState extends State<Loginpage> {
                 height: 10,
               ),
               Container(
-                margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -78,12 +79,12 @@ class _LoginpageState extends State<Loginpage> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               Row(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 50),
+                    margin: EdgeInsets.only(left: 40),
                     child: Text(
                       'Password',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -95,7 +96,8 @@ class _LoginpageState extends State<Loginpage> {
                 height: 10,
               ),
               Container(
-                margin: EdgeInsets.only(top: 10, left: 50, right: 10),
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
                 child: TextField(
                   controller: passwordController,
                   decoration: InputDecoration(
@@ -108,9 +110,8 @@ class _LoginpageState extends State<Loginpage> {
                 height: 40,
               ),
               Container(
-                margin: EdgeInsets.only(top: 10, left: 50, right: 10),
-                height: 60,
-                width: 400,
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
                 child: Center(
                     child: InkWell(
                   child: Text('Login'),
@@ -142,6 +143,6 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ]),
           ]),
-    ));
+    ),);
   }
 }
