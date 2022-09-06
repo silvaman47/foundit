@@ -9,6 +9,8 @@ import 'package:foundit/components/custom_dialog.dart';
 import 'package:foundit/models/user_model.dart';
 import 'package:foundit/screens/home/homepage.dart';
 import 'package:foundit/screens/login/loginpage.dart';
+import 'package:foundit/sizeconfig.dart';
+import 'package:sizer/sizer.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
@@ -68,7 +70,8 @@ class Signup extends StatelessWidget {
                       width: 20,
                     ),
                     Container(
-                      width: 240,
+                      height: MediaQuery.of(context).size.height * 0.10,
+                      width: MediaQuery.of(context).size.width * 0.55,
                       child: TextFormField(
                         controller: nameController,
                         decoration: const InputDecoration(
@@ -164,6 +167,9 @@ class Signup extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
                 GestureDetector(
                   onTap: () async {
                     try {
@@ -211,10 +217,7 @@ class Signup extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
-                ),
-                SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Row(
                   children: [
@@ -235,7 +238,10 @@ class Signup extends StatelessWidget {
                             ),
                           );
                         },
-                        child: Text('LogIn'),
+                        child: Text(
+                          'LogIn',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ],

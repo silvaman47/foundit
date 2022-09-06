@@ -84,7 +84,6 @@ class _ItemScreenState extends State<ItemScreen> {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
             }
-            
 
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Text("Loading");

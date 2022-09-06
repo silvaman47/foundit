@@ -49,7 +49,7 @@ class _ComplainPageState extends State<ComplainPage> {
     }
   }
 
-  Future<String?> uploadImage(File? image) async {
+  Future uploadImage(File? image) async {
     final _firebaseStorage = FirebaseStorage.instance;
     //final imageRef = _firebaseStorage.ref("images/${image!.path}");
     final ref =
@@ -68,7 +68,7 @@ class _ComplainPageState extends State<ComplainPage> {
         // });
 
         // setState(() {
-        //   imageUrl = downloadUrl;
+        //    = downloadUrl;
         // });
       } on FirebaseException catch (e) {
         log(e.code);
@@ -77,7 +77,12 @@ class _ComplainPageState extends State<ComplainPage> {
       print('No Image Path Received');
     }
 
-    return await ref.getDownloadURL();
+    await ref.getDownloadURL().then((value) {
+      setState(() {
+        imageUrl = value;
+      });
+      log(imageUrl!);
+    });
   }
 
   final auth = FirebaseAuth.instance;
@@ -251,7 +256,7 @@ class _ComplainPageState extends State<ComplainPage> {
                 GestureDetector(
                   onTap: () async {
                     try {
-                      uploadImage(_image).then((value) => imageUrl = value);
+                      uploadImage(_image);
                       final complaint = Complaint(
                         owner: auth.currentUser!.email,
                         image: imageUrl,
@@ -273,9 +278,10 @@ class _ComplainPageState extends State<ComplainPage> {
                           )
                           .doc();
                       await docRef.set(complaint);
+                      await docRef.update({"image": imageUrl!});
 
                       // Navigator.push(context,
-                      //   MaterialPageRoute(builder: (ctx) => ItemScreen()));
+                      //     MaterialPageRoute(builder: (ctx) => ItemScreen()));
                     } on FirebaseAuthException catch (e) {
                       log(e.toString());
                       CustomDialog(

@@ -35,21 +35,19 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Foundit'),
+          title: const Text('FOUNDIT'),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             // ignore: prefer_const_constructors
             BottomNavigationBarItem(
               // ignore: prefer_const_constructors
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.red,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
+              icon: Icon(
+                Icons.map,
+                color: Colors.amber,
+              ),
               label: 'Map',
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.amber,
             ),
             BottomNavigationBarItem(
               icon: InkWell(
@@ -105,7 +103,8 @@ class _HomepageState extends State<Homepage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (ctx) => ComplainPage(latlong: tomtomHQ)));
+                                      builder: (ctx) =>
+                                          ComplainPage(latlong: tomtomHQ)));
                             },
                             child: Text("Yes"),
                           ),

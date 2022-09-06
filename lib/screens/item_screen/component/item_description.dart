@@ -26,45 +26,57 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {}),
-        child: Icon(Icons.message),
+      appBar: AppBar(
+        title: Text('Details'),
       ),
-      appBar: AppBar(),
       body: Column(
         children: [
           Container(
               child: Image(image: NetworkImage(widget.lostItem["image"]))),
           SizedBox(
-            height: 20,
+            height: 50,
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 10, 200, 10),
+            padding: EdgeInsets.only(left: 10),
             child: Text(widget.lostItem["location"]),
+            width: double.infinity,
           ),
           SizedBox(
             height: 20,
           ),
           Container(
             margin: EdgeInsets.only(right: 70),
-            padding: EdgeInsets.fromLTRB(10, 10, 200, 10),
+            padding: EdgeInsets.only(left: 10),
             child: Text(widget.lostItem["owner"]),
+            width: double.infinity,
           ),
           SizedBox(
             height: 20,
           ),
           Container(
             margin: EdgeInsets.only(right: 70),
-            padding: EdgeInsets.fromLTRB(10, 10, 200, 10),
+            padding: EdgeInsets.only(left: 10),
             child: Text(widget.lostItem["description"]),
+            width: double.infinity,
+          ),
+          SizedBox(
+            height: 20,
           ),
           Container(
+            width: double.infinity,
             margin: EdgeInsets.only(right: 70),
-            padding: EdgeInsets.fromLTRB(10, 10, 200, 10),
+            padding: EdgeInsets.only(left: 10),
             child: Text(DateFormat('yyyy-MM-dd').format(Timestamp(
                     widget.lostItem['dateTime'].seconds,
                     widget.lostItem['dateTime'].nanoseconds)
                 .toDate())),
+          ),
+          SizedBox(
+            height: 80,
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text('Claim'),
           )
         ],
       ),

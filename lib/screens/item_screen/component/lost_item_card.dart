@@ -40,7 +40,10 @@ class _LostItemCardState extends State<LostItemCard> {
         leading: Container(
             width: 80,
             height: 80,
-            child: Image.network('${widget.lostItem['image']}')),
+            child: widget.lostItem['image'] != null
+                ? Image.network('${widget.lostItem['image']}')
+                : Image.network(
+                    "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png")),
         title: Text(widget.lostItem['location']),
         subtitle: Text(DateFormat('yyyy-MM-dd').format(Timestamp(
                 widget.lostItem['dateTime'].seconds,
