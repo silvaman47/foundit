@@ -23,7 +23,10 @@ class Profilepage extends StatelessWidget {
     }
   }
 
-  @override
+  TextEditingController nameController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,9 +67,10 @@ class Profilepage extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  width: 290,
-                  height: 50,
+                  height: MediaQuery.of(context).size.height * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.70,
                   child: TextField(
+                    controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
@@ -76,7 +80,7 @@ class Profilepage extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             Row(
               // ignore: prefer_const_literals_to_create_immutables
@@ -90,10 +94,11 @@ class Profilepage extends StatelessWidget {
                 ),
                 Container(
                   //margin: EdgeInsets.only(left: 10),
-                  padding: EdgeInsets.only(right: 20),
-                  width: 290,
-                  height: 50,
+                  //padding: EdgeInsets.only(right: 20),
+                  height: MediaQuery.of(context).size.height * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.67,
                   child: TextField(
+                    controller: numberController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Number',
@@ -103,7 +108,7 @@ class Profilepage extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             Row(
               // ignore: prefer_const_literals_to_create_immutables
@@ -116,9 +121,10 @@ class Profilepage extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  width: 290,
-                  height: 50,
+                  height: MediaQuery.of(context).size.height * 0.10,
+                  width: MediaQuery.of(context).size.width * 0.71,
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
@@ -128,17 +134,12 @@ class Profilepage extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 50,
+              height: 20,
             ),
-            Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Text('About'),
-                ),
-              ],
-            )
+            TextButton(
+              onPressed: () {},
+              child: Text('Save'),
+            ),
           ],
         ),
       ),

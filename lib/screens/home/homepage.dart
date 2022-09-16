@@ -100,6 +100,7 @@ class _HomepageState extends State<Homepage> {
                         actions: [
                           TextButton(
                             onPressed: () {
+                              Navigator.pop(context);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

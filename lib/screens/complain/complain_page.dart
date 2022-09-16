@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, unused_element
 
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/models/complain_model.dart';
+import 'package:foundit/screens/home/homepage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -30,59 +32,44 @@ class ComplainPage extends StatefulWidget {
 class _ComplainPageState extends State<ComplainPage> {
   File? _image;
   String? imageUrl;
-  final _picker = ImagePicker();
+  // final _picker = ImagePicker();
   TextEditingController locationController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   DateTime? lostDate;
   // Implementing the image picker
-  Future<void> _openImagePicker() async {
-    // await Permission.photos.request();
-    // var permissionStatus = await Permission.photos.status;
 
-    final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-    }
-  }
-
-  Future uploadImage(File? image) async {
+  uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
-    //final imageRef = _firebaseStorage.ref("images/${image!.path}");
-    final ref =
-        _firebaseStorage.ref('images/${image!.path.replaceRange(1, 20, '')}');
-    if (image != null) {
-      //Upload to Firebase
-      try {
-        await ref.putFile(image);
-        //image fetched
-        // await imageRef.getDownloadURL();
-        // setState(() {
-        // var downloadUrl =
-        // setState(() {
-        //   imageUrl = downloadUrl;
-        // });
-        // });
+    final _imagePicker = ImagePicker();
+    PickedFile? image;
+    //Check Permissions
+    await Permission.photos.request();
 
-        // setState(() {
-        //    = downloadUrl;
-        // });
-      } on FirebaseException catch (e) {
-        log(e.code);
+    var permissionStatus = await Permission.photos.status;
+
+    if (permissionStatus.isGranted) {
+      //Select Image
+      image = await _imagePicker.getImage(source: ImageSource.gallery);
+      var file = File(image!.path);
+
+      if (image != null) {
+        //Upload to Firebase
+        var snapshot = await _firebaseStorage
+            .ref()
+            .child('images/${image.path.replaceRange(1, 20, '')}')
+            .putFile(file);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        setState(() {
+          imageUrl = downloadUrl;
+        });
+      } else {
+        print('No Image Path Received');
       }
     } else {
-      print('No Image Path Received');
+      print('Permission not granted. Try Again with permission access');
     }
-
-    await ref.getDownloadURL().then((value) {
-      setState(() {
-        imageUrl = value;
-      });
-      log(imageUrl!);
-    });
   }
 
   final auth = FirebaseAuth.instance;
@@ -108,26 +95,18 @@ class _ComplainPageState extends State<ComplainPage> {
                   child: ElevatedButton(
                       child: const Text('Select An Image'),
                       onPressed: () async {
-                        if (await Permission.storage.request().isGranted) {
-                          _openImagePicker();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: SnackBar(
-                                  content:
-                                      Text("PLease allow storage access"))));
-                        }
+                        uploadImage();
                       }),
                 ),
                 const SizedBox(height: 35),
                 Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  height: 220,
-                  color: Colors.grey[300],
-                  child: _image != null
-                      ? Image.file(_image!, fit: BoxFit.contain)
-                      : const Text('Please select an image'),
-                ),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: 220,
+                    color: Colors.grey[300],
+                    child: (imageUrl != null)
+                        ? Image.network(imageUrl!)
+                        : Text('Select Image')),
                 SizedBox(
                   height: 20,
                 ),
@@ -254,42 +233,29 @@ class _ComplainPageState extends State<ComplainPage> {
                   height: 20,
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    try {
-                      uploadImage(_image);
-                      final complaint = Complaint(
-                        owner: auth.currentUser!.email,
-                        image: imageUrl,
-                        location: locationController.text.trim(),
-                        status: 'lost',
-                        description: descriptionController.text.trim(),
-                        latitude: widget.latlong.latitude,
-                        longitude: widget.latlong.longitude,
-                        dateTime: lostDate ?? DateTime.now(),
-                        finders: [],
-                      );
-                      // var emailController;
-                      final docRef = db
-                          .collection("complaints")
-                          .withConverter(
-                            fromFirestore: Complaint.fromFirestore,
-                            toFirestore: (Complaint complaint, options) =>
-                                complaint.toFirestore(),
-                          )
-                          .doc();
-                      await docRef.set(complaint);
-                      await docRef.update({"image": imageUrl!});
+                  onTap: () {
+                    final complaint = {
+                      "owner": auth.currentUser!.email,
+                      "image": imageUrl,
+                      "location": locationController.text.trim(),
+                      "status": 'lost',
+                      "description": descriptionController.text.trim(),
+                      "latitude": widget.latlong.latitude,
+                      "longitude": widget.latlong.longitude,
+                      "dateTime": lostDate ?? DateTime.now(),
+                      "finders": [],
+                    };
 
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (ctx) => ItemScreen()));
-                    } on FirebaseAuthException catch (e) {
-                      log(e.toString());
-                      CustomDialog(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          content: e.toString());
-                    }
+                    print(imageUrl);
+                    final docRef = db
+                        .collection("complaints")
+                        .doc()
+                        .set(complaint)
+                        .onError((error, stackTrace) =>
+                            print("error writing doc: $e"));
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (ctx) => Homepage()));
                   },
                   child: Container(
                     // margin: EdgeInsets.only(top: 10, left: 50, right: 10),
