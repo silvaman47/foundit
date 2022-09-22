@@ -23,20 +23,20 @@ class Onboarding extends StatelessWidget {
           pages: [
             PageViewModel(
               title: 'Save your self time and effort',
-              body: 'Searchinng for lost items has never been easier',
+              body: 'Searching for lost items has never been easier',
               image: buildImage('assets/images/onboard1.jpg'),
               decoration: getPageDecoration(),
             ),
             PageViewModel(
               title: 'Save your self time and effort',
-              body: 'Searchinng for lost items has never been easier',
-              image: buildImage('assets/images/onboard1.jpg'),
+              body: 'Narrow down the search radius for your lost item',
+              image: buildImage('assets/images/foundit onboarding image.png'),
               decoration: getPageDecoration(),
             ),
             PageViewModel(
               title: 'Save your self time and effort',
-              body: 'Searchinng for lost items has never been easier',
-              image: buildImage('assets/images/onboard1.jpg'),
+              body: 'Connect with the potential finder of your lost item',
+              image: buildImage('assets/images/foundit onboarding image2.png'),
               decoration: getPageDecoration(),
             ),
           ],

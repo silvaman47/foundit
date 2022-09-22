@@ -2,15 +2,19 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
 class Profilepage extends StatelessWidget {
   Profilepage({Key? key}) : super(key: key);
 
   File? _image;
-
+  String? imageUrl;
   final _picker = ImagePicker();
   // Implementing the image picker
   Future<void> _openImagePicker() async {
@@ -23,9 +27,50 @@ class Profilepage extends StatelessWidget {
     }
   }
 
+  // final Stream<QuerySnapshot> _userstream =
+  //     FirebaseFirestore.instance.collection('users').where("u") snapshots();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  updateField(String field,  String data) {
+    final ref = FirebaseFirestore.instance;
+    ref.collection('users').doc(auth.currentUser!.email).update({field: data});
+  }
+
+  uploadImage() async {
+    final _firebaseStorage = FirebaseStorage.instance;
+    final _imagePicker = ImagePicker();
+    PickedFile? image;
+    //Check Permissions
+    await Permission.photos.request();
+
+    var permissionStatus = await Permission.photos.status;
+
+    if (permissionStatus.isGranted) {
+      //Select Image
+      image = await _imagePicker.getImage(source: ImageSource.gallery);
+      var file = File(image!.path);
+
+      if (image != null) {
+        //Upload to Firebase
+        var snapshot = await _firebaseStorage
+            .ref()
+            .child('images/${image.path.replaceRange(1, 20, '')}')
+            .putFile(file);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        setState(() {
+          imageUrl = downloadUrl;
+        });
+      } else {
+        print('No Image Path Received');
+      }
+    } else {
+      print('Permission not granted. Try Again with permission access');
+    }
+  }
+
+  final auth = FirebaseAuth.instance;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +86,10 @@ class Profilepage extends StatelessWidget {
             ),
             Center(
               child: CircleAvatar(
-                child: _image != null
-                    ? Image.file(
-                        _image!,
-                        fit: BoxFit.cover,
-                      )
-                    : const Text('Photo'),
+                backgroundColor: Colors.grey,
+                child: (imageUrl != null)
+                    ? Image.network(imageUrl!)
+                    : Text('Select Image'),
                 radius: 80,
               ),
             ),
@@ -54,7 +97,9 @@ class Profilepage extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 30),
               child: FloatingActionButton(
                   child: Icon(Icons.add_a_photo_outlined),
-                  onPressed: _openImagePicker),
+                  onPressed: () async {
+                    uploadImage();
+                  }),
             ),
             Row(
               // ignore: prefer_const_literals_to_create_immutables

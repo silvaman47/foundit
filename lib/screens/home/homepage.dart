@@ -44,10 +44,10 @@ class _HomepageState extends State<Homepage> {
               // ignore: prefer_const_constructors
               icon: Icon(
                 Icons.map,
-                color: Colors.amber,
+                color: Colors.black,
               ),
               label: 'Map',
-              backgroundColor: Colors.amber,
+              backgroundColor: Colors.blueAccent,
             ),
             BottomNavigationBarItem(
               icon: InkWell(
@@ -61,7 +61,7 @@ class _HomepageState extends State<Homepage> {
                   },
                   child: Icon(Icons.add)),
               label: 'Item',
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.blueAccent,
             ),
             BottomNavigationBarItem(
               icon: InkWell(
@@ -75,11 +75,11 @@ class _HomepageState extends State<Homepage> {
                   },
                   child: Icon(Icons.person)),
               label: 'Profile',
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.blueAccent,
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.white,
+          selectedItemColor: Colors.black,
           onTap: _onItemTapped,
         ),
         body: Center(

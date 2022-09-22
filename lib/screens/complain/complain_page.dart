@@ -235,6 +235,7 @@ class _ComplainPageState extends State<ComplainPage> {
                 GestureDetector(
                   onTap: () {
                     final complaint = {
+                      "id"
                       "owner": auth.currentUser!.email,
                       "image": imageUrl,
                       "location": locationController.text.trim(),

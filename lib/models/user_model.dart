@@ -3,18 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   String? name;
   String? image;
-  List? complaints;
-  String? location;
+  String? email;
+  String? number;
+  String? password;
 
-  UserModel (
-    {
-      this.name,
-      this.image,
-      this.location,
-      this.complaints,
-  });
-  
-
+  UserModel({this.name, this.image, this.number, this.email, this.password});
 
   factory UserModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -23,19 +16,20 @@ class UserModel {
     final data = snapshot.data();
     return UserModel(
       name: data?['name'],
+      password: data?['password'],
       image: data?['image'],
-      location: data?['location'],
-      complaints: data?['complaints'] is Iterable ? List.from(data?['complaints']) : null,
+      number: data?['number'],
+      email: data?['email'],
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
       if (name != null) "name": name,
+      if (email != null) "email": email,
       if (image != null) "image": image,
-      if (location != null) "location": location,
-      if (complaints != null) "complaints": complaints,
+      if (number != null) "number": number,
+      if (password != null) "password": password,
     };
   }
-
 }
