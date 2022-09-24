@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:foundit/constants/custom_textstyle.dart';
 import 'package:foundit/models/complain_model.dart';
 import 'package:foundit/screens/item_screen/component/lost_item_card.dart';
 
@@ -76,7 +77,10 @@ class _ItemScreenState extends State<ItemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Lost Items'),
+          title: Text(
+            'Lost Items',
+            style: customtextstyle(),
+          ),
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: _complaintStream,
@@ -109,4 +113,6 @@ class _ItemScreenState extends State<ItemScreen> {
           }),
         ));
   }
+
+
 }

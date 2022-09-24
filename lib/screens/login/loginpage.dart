@@ -45,7 +45,9 @@ class _LoginpageState extends State<Loginpage> {
                       child: Text(
                         'Login',
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
                       ),
                     ),
                   ],
@@ -54,15 +56,7 @@ class _LoginpageState extends State<Loginpage> {
                   height: 30,
                 ),
                 Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 40),
-                      child: Text(
-                        'Your Email',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                  children: <Widget>[],
                 ),
                 SizedBox(
                   height: 10,
@@ -71,6 +65,7 @@ class _LoginpageState extends State<Loginpage> {
                   height: MediaQuery.of(context).size.height * 0.10,
                   width: MediaQuery.of(context).size.width * 0.80,
                   child: TextField(
+                    keyboardType: TextInputType.emailAddress,
                     controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -82,15 +77,7 @@ class _LoginpageState extends State<Loginpage> {
                   height: 10,
                 ),
                 Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 40),
-                      child: Text(
-                        'Password',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                  children: <Widget>[],
                 ),
                 SizedBox(
                   height: 10,
@@ -99,6 +86,8 @@ class _LoginpageState extends State<Loginpage> {
                   height: MediaQuery.of(context).size.height * 0.10,
                   width: MediaQuery.of(context).size.width * 0.80,
                   child: TextField(
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),

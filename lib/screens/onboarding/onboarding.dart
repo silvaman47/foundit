@@ -54,6 +54,7 @@ class Onboarding extends StatelessWidget {
 }
 
 Widget buildImage(String path) => Center(
+      widthFactor: 40,
       child: Image.asset(
         path,
         width: 350,
@@ -62,10 +63,13 @@ Widget buildImage(String path) => Center(
 
 PageDecoration getPageDecoration() => PageDecoration(
     titleTextStyle: TextStyle(
+      fontFamily: 'Montserrat',
       fontSize: 28,
       fontWeight: FontWeight.bold,
     ),
-    bodyTextStyle: TextStyle(fontSize: 20),
+    bodyTextStyle: TextStyle(
+        fontSize: 20, fontFamily: 'Montserrat', fontWeight: FontWeight.bold),
     //descriptionPadding: EdgeInsets.all(16).copyWith(bottom: 0),
-    imagePadding: EdgeInsets.all(24),
+    imagePadding: EdgeInsets.all(10),
+    contentMargin: EdgeInsets.all(30),
     pageColor: Colors.white);

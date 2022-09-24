@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:foundit/constants/custom_textstyle.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,6 +14,24 @@ import 'package:permission_handler/permission_handler.dart';
 class Profilepage extends StatelessWidget {
   Profilepage({Key? key}) : super(key: key);
 
+  updateProfileData() {
+    setState(() {
+      nameController.text.trim().length < 3 || nameController.text.isEmpty
+          ? _nameValid = false
+          : _nameValid = true;
+      numberController.text.trim().length < 10
+          ? _numberValid = false
+          : _numberValid = true;
+      passwordController.text.trim().length < 6
+          ? _passwordValid = false
+          : _passwordValid = true;
+    });
+    if (_nameValid && _numberValid && _passwordValid) {
+      final ref = FirebaseFirestore.instance;
+    }
+  }
+
+  final auth = FirebaseAuth.instance;
   File? _image;
   String? imageUrl;
   final _picker = ImagePicker();
@@ -33,7 +52,12 @@ class Profilepage extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  updateField(String field,  String data) {
+  TextEditingController passwordController = TextEditingController();
+  bool _nameValid = true;
+  bool _numberValid = true;
+  bool _emailValid = true;
+  bool _passwordValid = true;
+  updateField(String field, String data) {
     final ref = FirebaseFirestore.instance;
     ref.collection('users').doc(auth.currentUser!.email).update({field: data});
   }
@@ -70,12 +94,13 @@ class Profilepage extends StatelessWidget {
     }
   }
 
-  final auth = FirebaseAuth.instance;
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
+        title: Text(
+          'My Profile',
+          style: customtextstyle(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -85,104 +110,93 @@ class Profilepage extends StatelessWidget {
               height: 20,
             ),
             Center(
-              child: CircleAvatar(
-                backgroundColor: Colors.grey,
+              child: Container(
+                width: 150,
+                height: 150,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                  //borderRadius: BorderRadius.circular(30),
+                ),
                 child: (imageUrl != null)
-                    ? Image.network(imageUrl!)
-                    : Text('Select Image'),
-                radius: 80,
+                    ? Image(
+                        image: NetworkImage(imageUrl!),
+                        fit: BoxFit.cover,
+                      )
+                    : Center(child: Text('Select Image')),
               ),
             ),
+            SizedBox(
+              height: 50,
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
-              margin: EdgeInsets.only(bottom: 30),
-              child: FloatingActionButton(
-                  child: Icon(Icons.add_a_photo_outlined),
-                  onPressed: () async {
-                    uploadImage();
-                  }),
-            ),
-            Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Text('Name'),
+              margin: EdgeInsets.only(left: 10),
+              height: MediaQuery.of(context).size.height * 0.10,
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextFormField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Name',
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  child: TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
             SizedBox(
               height: 30,
             ),
-            Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Text('Number'),
+            SizedBox(
+              width: 0,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              height: MediaQuery.of(context).size.height * 0.10,
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextFormField(
+                keyboardType: TextInputType.phone,
+                controller: numberController,
+                decoration: const InputDecoration(
+                  labelText: 'Number',
                 ),
-                SizedBox(
-                  width: 0,
-                ),
-                Container(
-                  //margin: EdgeInsets.only(left: 10),
-                  //padding: EdgeInsets.only(right: 20),
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.67,
-                  child: TextField(
-                    controller: numberController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Number',
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
             SizedBox(
               height: 30,
             ),
-            Row(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Text('Email'),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              height: MediaQuery.of(context).size.height * 0.10,
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.71,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
             SizedBox(
               height: 20,
             ),
-            TextButton(
-              onPressed: () {},
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              height: MediaQuery.of(context).size.height * 0.10,
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextFormField(
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
+                controller: passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: updateProfileData(),
               child: Text('Save'),
             ),
           ],

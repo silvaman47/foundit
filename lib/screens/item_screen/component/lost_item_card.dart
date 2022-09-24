@@ -29,7 +29,11 @@ class _LostItemCardState extends State<LostItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        tileColor: Colors.blue,
         onTap: () {
           Navigator.push(
               context,
@@ -44,10 +48,22 @@ class _LostItemCardState extends State<LostItemCard> {
                 ? Image.network('${widget.lostItem['image']}')
                 : Image.network(
                     "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png")),
-        title: Text(widget.lostItem['location']),
-        subtitle: Text(DateFormat('yyyy-MM-dd').format(Timestamp(
-                widget.lostItem['dateTime'].seconds,
-                widget.lostItem['dateTime'].nanoseconds)
-            .toDate())));
+        title: Text(
+          widget.lostItem['location'],
+          style: custtext(),
+        ),
+        subtitle: Text(
+          DateFormat('yyyy-MM-dd').format(
+            Timestamp(widget.lostItem['dateTime'].seconds,
+                    widget.lostItem['dateTime'].nanoseconds)
+                .toDate(),
+          ),
+          style: custtext(),
+        ),
+      ),
+    );
   }
+
+  TextStyle custtext() =>
+      TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold);
 }

@@ -83,7 +83,13 @@ class _ComplainPageState extends State<ComplainPage> {
     final db = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Complain'),
+        title: const Text(
+          'Complain',
+          style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.bold,
+              fontSize: 20),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -93,7 +99,13 @@ class _ComplainPageState extends State<ComplainPage> {
               children: <Widget>[
                 Center(
                   child: ElevatedButton(
-                      child: const Text('Select An Image'),
+                      child: const Text(
+                        'Select An Image',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       onPressed: () async {
                         uploadImage();
                       }),
@@ -121,7 +133,7 @@ class _ComplainPageState extends State<ComplainPage> {
                   //  padding: EdgeInsets.symmetric(horizontal: 100),
                   width: double.infinity,
                   height: 40,
-                  child: TextFormField(
+                  child: TextField(
                     controller: locationController,
                     decoration: InputDecoration(border: OutlineInputBorder()),
                   ),
@@ -236,7 +248,7 @@ class _ComplainPageState extends State<ComplainPage> {
                   onTap: () {
                     final complaint = {
                       "id"
-                      "owner": auth.currentUser!.email,
+                          "owner": auth.currentUser!.email,
                       "image": imageUrl,
                       "location": locationController.text.trim(),
                       "status": 'lost',
@@ -262,7 +274,14 @@ class _ComplainPageState extends State<ComplainPage> {
                     // margin: EdgeInsets.only(top: 10, left: 50, right: 10),
                     height: 60,
                     width: double.infinity,
-                    child: Center(child: Text('Submit')),
+                    child: Center(
+                        child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(8),

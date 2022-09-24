@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/components/custom_dialog.dart';
+import 'package:foundit/constants/custom_textstyle.dart';
 import 'package:foundit/models/user_model.dart';
 import 'package:foundit/screens/home/homepage.dart';
 import 'package:foundit/screens/login/loginpage.dart';
@@ -92,7 +93,9 @@ class _SignupState extends State<Signup> {
                       child: Text(
                         'Create Account',
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
                       ),
                     ),
                   ],
@@ -113,7 +116,7 @@ class _SignupState extends State<Signup> {
                           height: 100,
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.grey,
                             shape: BoxShape.circle,
                             //borderRadius: BorderRadius.circular(200),
                           ),
@@ -122,7 +125,7 @@ class _SignupState extends State<Signup> {
                                   image: NetworkImage(imageUrl!),
                                   fit: BoxFit.cover,
                                 )
-                              : Text('Select Image'),
+                              : Center(child: Text('Select Image')),
                         ),
                       ),
                     ),
@@ -151,18 +154,10 @@ class _SignupState extends State<Signup> {
                   ],
                 ),
                 Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 40),
-                      child: Text(
-                        'Your Email',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                  children: <Widget>[],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 50,
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.10,
@@ -181,15 +176,7 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
                 Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 40),
-                      child: Text(
-                        'Password',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                  children: <Widget>[],
                 ),
                 SizedBox(
                   height: 10,
@@ -198,6 +185,7 @@ class _SignupState extends State<Signup> {
                   height: MediaQuery.of(context).size.height * 0.10,
                   width: MediaQuery.of(context).size.width * 0.80,
                   child: TextField(
+                    obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
                     controller: passwordController,
                     //  key: key,
@@ -209,13 +197,6 @@ class _SignupState extends State<Signup> {
                 ),
                 SizedBox(
                   height: 20,
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 260),
-                  child: Text(
-                    'Number',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
                 ),
                 SizedBox(
                   height: 10,

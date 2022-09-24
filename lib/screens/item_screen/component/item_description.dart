@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
+import 'package:foundit/constants/custom_textstyle.dart';
 import 'package:foundit/models/complain_model.dart';
 import 'package:intl/intl.dart';
 
@@ -27,59 +28,151 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details'),
+        title: Text(
+          'Details',
+          style: customtextstyle(),
+        ),
       ),
-      body: Column(
-        children: [
-          Container(
-              child: Image(image: NetworkImage(widget.lostItem["image"]))),
-          SizedBox(
-            height: 50,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text(widget.lostItem["location"]),
-            width: double.infinity,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 70),
-            padding: EdgeInsets.only(left: 10),
-            child: Text(widget.lostItem["owner"]),
-            width: double.infinity,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 70),
-            padding: EdgeInsets.only(left: 10),
-            child: Text(widget.lostItem["description"]),
-            width: double.infinity,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(right: 70),
-            padding: EdgeInsets.only(left: 10),
-            child: Text(DateFormat('yyyy-MM-dd').format(Timestamp(
-                    widget.lostItem['dateTime'].seconds,
-                    widget.lostItem['dateTime'].nanoseconds)
-                .toDate())),
-          ),
-          SizedBox(
-            height: 80,
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Text('Claim'),
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: BoxDecoration(
+                    color: Colors.amber,
+                    //  shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  height: 200,
+                  width: 400,
+                  child: FittedBox(
+                    child: Image(
+                      height: 200,
+                      width: 400,
+                      image: NetworkImage(widget.lostItem["image"]),
+                      fit: BoxFit.cover,
+                    ),
+                  )),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Card(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  widget.lostItem["location"],
+                  style: customtext(),
+                ),
+                height: 100,
+                width: double.infinity,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Card(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                margin: EdgeInsets.only(right: 70),
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  widget.lostItem["owner"],
+                  style: customtext(),
+                ),
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Card(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                margin: EdgeInsets.only(right: 70),
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  widget.lostItem["description"],
+                  style: customtext(),
+                ),
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Card(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
+                margin: EdgeInsets.only(right: 70),
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  DateFormat('yyyy-MM-dd').format(Timestamp(
+                          widget.lostItem['dateTime'].seconds,
+                          widget.lostItem['dateTime'].nanoseconds)
+                      .toDate()),
+                  style: customtext(),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                          title: Text("Alert"),
+                          content:
+                              Text("Do you want to confirm claim of this item"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {},
+                              child: Text("Yes"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("No"),
+                            ),
+                          ],
+                        ));
+              },
+              child: Text('Claim'),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  TextStyle customtext() {
+    return TextStyle(
+        fontFamily: 'Montserrat', fontWeight: FontWeight.bold, fontSize: 20);
   }
 }

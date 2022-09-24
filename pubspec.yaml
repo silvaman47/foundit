@@ -34,7 +34,14 @@ dependencies:
   intl: ^0.17.0
   cached_network_image: ^3.2.1
   sizer: ^2.0.15
+  shared_preferences: ^2.0.15
+  flutter_launcher_icons: ^0.10.0
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/appsplashdark.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
   
 
 flutter_native_splash:
@@ -83,11 +90,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-ExtraLightItalic.ttf
+        - asset: assets/fonts/Montserrat-BoldItalic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
