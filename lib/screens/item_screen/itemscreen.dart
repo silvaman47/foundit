@@ -20,7 +20,7 @@ class _ItemScreenState extends State<ItemScreen> {
   List<Complaint> demoComplaints = [
     Complaint(
         description: 'Blue Bag',
-        finders: [],
+        ownernum: '0540484607',
         latitude: 2.333,
         longitude: -54.66,
         status: 'expired',
@@ -30,7 +30,7 @@ class _ItemScreenState extends State<ItemScreen> {
         location: 'KUST SCHOOL PATRK'),
     Complaint(
         description: 'Blue Bag',
-        finders: [],
+        ownernum: '0540484607',
         latitude: 2.333,
         longitude: -54.66,
         status: 'expired',
@@ -40,7 +40,7 @@ class _ItemScreenState extends State<ItemScreen> {
         location: 'KUST SCHOOL PATRK'),
     Complaint(
         description: 'Blue Bag',
-        finders: [],
+        ownernum: '0540484607',
         latitude: 2.333,
         longitude: -54.66,
         status: 'expired',
@@ -50,7 +50,7 @@ class _ItemScreenState extends State<ItemScreen> {
         location: 'KUST SCHOOL PATRK'),
     Complaint(
         description: 'Blue Bag',
-        finders: [],
+        ownernum: '0540484607',
         latitude: 2.333,
         longitude: -54.66,
         status: 'expired',
@@ -60,7 +60,7 @@ class _ItemScreenState extends State<ItemScreen> {
         location: 'KUST SCHOOL PATRK'),
     Complaint(
         description: 'Blue Bag',
-        finders: [],
+        ownernum: '0540484607',
         latitude: 2.333,
         longitude: -54.66,
         status: 'expired',
@@ -70,8 +70,10 @@ class _ItemScreenState extends State<ItemScreen> {
         location: 'KUST SCHOOL PATRK'),
   ];
 
-  final Stream<QuerySnapshot> _complaintStream =
-      FirebaseFirestore.instance.collection('complaints').snapshots();
+  final Stream<QuerySnapshot> _complaintStream = FirebaseFirestore.instance
+      .collection('complaints')
+      .where("status", isEqualTo: 'lost')
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -92,27 +94,29 @@ class _ItemScreenState extends State<ItemScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Text("Loading");
             }
-            return SingleChildScrollView(
-              child: Column(
-                children: snapshot.data!.docs
-                    .map((DocumentSnapshot document) {
-                      // Map<String, dynamic> data =
-                      //     document as Map<String, dynamic>;
-                      return LostItemCard(lostItem: document.data());
-                    })
-                    .toList()
-                    .cast(),
-                // [
-                //   ...List.generate(
-                //     demoComplaints.length,
-                //     (index) => LostItemCard(lostItem: demoComplaints[index]),
-                //   ),
-                // ],
-              ),
-            );
+            return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return LostItemCard(lostItem: snapshot.data!.docs[index]);
+                });
+            // SingleChildScrollView(
+            //   child: Column(
+            //     children: snapshot.data!.docs
+            //         .map((DocumentSnapshot document) {
+            //           // Map<String, dynamic> data =
+            //           //     document as Map<String, dynamic>;
+            //           return LostItemCard(lostItem: document.data);
+            //         })
+            //         .toList()
+            //         .cast(),
+            //     // [
+            //   ...List.generate(
+            //     demoComplaints.length,
+            //     (index) => LostItemCard(lostItem: demoComplaints[index]),
+            //   ),
+            // ],
           }),
         ));
   }
-
-
 }

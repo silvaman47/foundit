@@ -298,15 +298,16 @@ class _SignupState extends State<Signup> {
                   height: 30,
                 ),
                 TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Homepage(),
-                        ),
-                      );
-                    },
-                    child: Text('Skip'))
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Homepage(),
+                      ),
+                    );
+                  },
+                  child: Text('Skip'),
+                )
               ],
             )
           ],

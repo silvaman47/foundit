@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:foundit/constants/custom_textstyle.dart';
 import 'package:foundit/models/complain_model.dart';
 import 'package:intl/intl.dart';
+import 'package:foundit/models/user_model.dart';
 
 class ItemDescriptionPage extends StatefulWidget {
   const ItemDescriptionPage({Key? key, required this.lostItem})
@@ -17,6 +18,9 @@ class ItemDescriptionPage extends StatefulWidget {
 
 class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
   String? formattedDate;
+
+  final db = FirebaseFirestore.instance.collection('complaints');
+
   @override
   void initState() {
     // TODO: implement initState
@@ -141,6 +145,21 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
             SizedBox(
               height: 30,
             ),
+            Card(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                margin: EdgeInsets.only(right: 70),
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  widget.lostItem["ownernum"],
+                  style: customtext(),
+                ),
+                height: MediaQuery.of(context).size.height * 0.10,
+                width: MediaQuery.of(context).size.width * 0.80,
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -151,7 +170,11 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
                               Text("Do you want to confirm claim of this item"),
                           actions: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await db
+                                    .doc(widget.lostItem.id)
+                                    .update({"status": 'found'});
+                              },
                               child: Text("Yes"),
                             ),
                             TextButton(

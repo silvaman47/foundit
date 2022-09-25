@@ -230,7 +230,7 @@ class _EditProfileState extends State<EditProfile> {
                       decoration: InputDecoration(label: Text('Phone Number')),
                       keyboardType: TextInputType.phone,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-
+                      
                       maxLength: 10,
                       onFieldSubmitted: (value) async {
                         setState(() {
@@ -271,6 +271,7 @@ class _EditProfileState extends State<EditProfile> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      obscureText: true,
                       //controller: nameController,
                       initialValue: '${data['password']}' == null
                           ? 'Enter your password'
@@ -292,6 +293,11 @@ class _EditProfileState extends State<EditProfile> {
                                     content: Text('Profile updated'))));
                       },
                     ),
+                  ),
+                  SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Save'),
                   ),
                 ]),
               );

@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/models/complain_model.dart';
+import 'package:foundit/models/user_model.dart';
 import 'package:foundit/screens/home/homepage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -246,9 +247,11 @@ class _ComplainPageState extends State<ComplainPage> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    print(imageUrl);
+                    final docRef = db.collection("complaints").doc();
                     final complaint = {
-                      "id"
-                          "owner": auth.currentUser!.email,
+                      "id": docRef.id,
+                      "owner": auth.currentUser!.email,
                       "image": imageUrl,
                       "location": locationController.text.trim(),
                       "status": 'lost',
@@ -256,16 +259,10 @@ class _ComplainPageState extends State<ComplainPage> {
                       "latitude": widget.latlong.latitude,
                       "longitude": widget.latlong.longitude,
                       "dateTime": lostDate ?? DateTime.now(),
-                      "finders": [],
+                      "ownernum": '050484607'
                     };
-
-                    print(imageUrl);
-                    final docRef = db
-                        .collection("complaints")
-                        .doc()
-                        .set(complaint)
-                        .onError((error, stackTrace) =>
-                            print("error writing doc: $e"));
+                    docRef.set(complaint).onError(
+                        (error, stackTrace) => print("error writing doc: $e"));
 
                     Navigator.push(context,
                         MaterialPageRoute(builder: (ctx) => Homepage()));

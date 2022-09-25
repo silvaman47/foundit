@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Complaint {
   String? idowner;
   String? description;
-  List? finders;
+  String? ownernum;
   double? latitude;
   double? longitude;
   String? status;
@@ -13,7 +13,7 @@ class Complaint {
 
   Complaint(
       {this.description,
-      this.finders,
+      this.ownernum,
       this.latitude,
       this.longitude,
       this.status,
@@ -36,7 +36,8 @@ class Complaint {
       latitude: data?['latitude'],
       longitude: data?['longitude'],
       dateTime: data?['dateTime'],
-      finders: data?['finders'] is Iterable ? List.from(data?['finders']) : null,
+      ownernum: data?['ownernum'],
+      
     );
   }
 
@@ -45,7 +46,7 @@ class Complaint {
       if (idowner != null) "idowner": idowner,
       if (image != null) "image": image,
       if (location != null) "location": location,
-      if (finders != null) "complaints": finders,
+      if (ownernum != null) "ownernum": ownernum,
       if (status != null) "status": status,
       if (description != null) "description": description,
       if (latitude != null) "latitude": latitude,
