@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Complaint {
-  String? owner;
+  String? idowner;
   String? description;
   List? finders;
   double? latitude;
@@ -17,7 +17,7 @@ class Complaint {
       this.latitude,
       this.longitude,
       this.status,
-      this.owner,
+      this.idowner,
       this.dateTime,
       this.location,
       this.image});
@@ -28,7 +28,7 @@ class Complaint {
   ) {
     final data = snapshot.data();
     return Complaint(
-      owner: data?['owner'],
+      idowner: data?['idowner'],
       description: data?['description'],
       status: data?['status'],
       location: data?['location'],
@@ -42,7 +42,7 @@ class Complaint {
 
   Map<String, dynamic> toFirestore() {
     return {
-      if (owner != null) "owner": owner,
+      if (idowner != null) "idowner": idowner,
       if (image != null) "image": image,
       if (location != null) "location": location,
       if (finders != null) "complaints": finders,

@@ -221,11 +221,10 @@ class _SignupState extends State<Signup> {
                     try {
                       // Create a new user with a first and last name
 
-                      auth.createUserWithEmailAndPassword(
+                      await auth.createUserWithEmailAndPassword(
                           email: emailController.text.trim(),
                           password: passwordController.text.trim());
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => Homepage()));
+
                       //
                       final user = UserModel(
                           name: nameController.text,
@@ -240,8 +239,10 @@ class _SignupState extends State<Signup> {
                             toFirestore: (UserModel user, options) =>
                                 user.toFirestore(),
                           )
-                          .doc();
+                          .doc(auth.currentUser!.uid);
                       await docRef.set(user);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) => Homepage()));
                     } on FirebaseAuthException catch (e) {
                       log(e.toString());
                       CustomDialog(
