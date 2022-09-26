@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foundit/constants/custom_textstyle.dart';
+import 'package:foundit/screens/login/loginpage.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -159,7 +160,7 @@ class _EditProfileState extends State<EditProfile> {
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: Text('No User Found'),
+                child: Text('Loading'),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -299,6 +300,11 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   SizedBox(height: 40),
+                  ElevatedButton(
+                      onPressed: () {
+                        signOut();
+                      },
+                      child: Text('Logout'))
                 ]),
               );
             }
@@ -306,5 +312,11 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
     );
+  }
+
+  signOut() async {
+    await _auth.signOut();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Loginpage()));
   }
 }

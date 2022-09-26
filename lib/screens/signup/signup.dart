@@ -74,14 +74,9 @@ class _SignupState extends State<Signup> {
           children: <Widget>[
             Column(
               children: <Widget>[
+                SizedBox(height: 20),
                 Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(8),
-                      child: IconButton(
-                          onPressed: null, icon: Icon(Icons.arrow_back_ios)),
-                    ),
-                  ],
+                  children: [],
                 ),
                 SizedBox(
                   height: 30,
