@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/components/custom_dialog.dart';
@@ -18,6 +19,7 @@ class _LoginpageState extends State<Loginpage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final auth = FirebaseAuth.instance;
+  String _errorMessage = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +73,16 @@ class _LoginpageState extends State<Loginpage> {
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
+                    onChanged: (val) {
+                      validateEmail(val);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    _errorMessage,
+                    style: TextStyle(color: Colors.red),
                   ),
                 ),
                 SizedBox(
@@ -134,5 +146,21 @@ class _LoginpageState extends State<Loginpage> {
             ]),
       ),
     );
+  }
+
+  void validateEmail(String val) {
+    if (val.isEmpty) {
+      setState(() {
+        _errorMessage = "Email can not be empty";
+      });
+    } else if (!EmailValidator.validate(val, true)) {
+      setState(() {
+        _errorMessage = "Invalid Email Address";
+      });
+    } else {
+      setState(() {
+        _errorMessage = "";
+      });
+    }
   }
 }

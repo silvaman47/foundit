@@ -142,7 +142,11 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: Text('Edit Profile'),
+        title: Text(
+          'Profile',
+          style:
+              TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -190,7 +194,7 @@ class _EditProfileState extends State<EditProfile> {
                     },
                     child: Text(
                       'Change profile photo',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   SizedBox(
@@ -230,7 +234,7 @@ class _EditProfileState extends State<EditProfile> {
                       decoration: InputDecoration(label: Text('Phone Number')),
                       keyboardType: TextInputType.phone,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      
+
                       maxLength: 10,
                       onFieldSubmitted: (value) async {
                         setState(() {
@@ -295,10 +299,6 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Save'),
-                  ),
                 ]),
               );
             }

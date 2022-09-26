@@ -18,7 +18,6 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
-  flutter_native_splash: ^2.1.1
   introduction_screen: ^3.0.0
   image_picker: ^0.8.5+3
   firebase_auth: ^3.3.19
@@ -36,13 +35,17 @@ dependencies:
   sizer: ^2.0.15
   shared_preferences: ^2.0.15
   flutter_launcher_icons: ^0.10.0
+  email_validator: ^2.1.17
+  flutter_native_splash: ^2.2.9
 
 flutter_icons:
   android: "launcher_icon"
+  remove_alpha_ios: true
   ios: true
-  image_path: "assets/images/appsplashdark.png"
+  image_path: "assets/images/appsplash.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
-  
+  adaptive_icon_background: "assets/images/appsplash.png"
+  adaptive_icon_foreground: "assets/images/appsplashscreen.png"
 
 flutter_native_splash:
 
@@ -59,7 +62,24 @@ flutter_native_splash:
 
     fullscreen: true
 
-    android12: false
+    android_12:
+    # The image parameter sets the splash screen icon image.  If this parameter is not specified,
+    # the app's launcher icon will be used instead.
+    # Please note that the splash screen will be clipped to a circle on the center of the screen.
+    # App icon with an icon background: This should be 960×960 pixels, and fit within a circle
+    # 640 pixels in diameter.
+    # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
+    # 768 pixels in diameter.
+    image: assets/images/founditicon.png
+
+    # App icon background color.
+    icon_background_color: "#FFFFFF"
+
+    # The image_dark parameter and icon_background_color_dark set the image and icon background
+    # color when the device is in dark mode. If they are not specified, the app will use the
+    # parameters from above.
+    image_dark: assets/images/founditicon.png
+    icon_background_color_dark: "#FFFFFF"
 
 dev_dependencies:
   flutter_test:

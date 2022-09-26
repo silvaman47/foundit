@@ -5,6 +5,7 @@ import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:foundit/constants/custom_textstyle.dart';
 import 'package:foundit/models/complain_model.dart';
+import 'package:foundit/screens/home/homepage.dart';
 import 'package:intl/intl.dart';
 import 'package:foundit/models/user_model.dart';
 
@@ -174,6 +175,13 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
                                 await db
                                     .doc(widget.lostItem.id)
                                     .update({"status": 'found'});
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          Homepage()),
+                                  ModalRoute.withName('/'),
+                                );
                               },
                               child: Text("Yes"),
                             ),
