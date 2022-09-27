@@ -171,6 +171,22 @@ class _LoginpageState extends State<Loginpage> {
             ),
           ),
         ),
+        isLoading
+            ? Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.amber,
+                  ),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              )
+            : SizedBox.shrink()
       ]),
     );
   }
