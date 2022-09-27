@@ -301,7 +301,27 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   SizedBox(height: 40),
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            content: Text('Log Out'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  signOut();
+                                },
+                                child: Text('Yes'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('No'),
+                              ),
+                            ],
+                          ),
+                        );
                         signOut();
                       },
                       child: Text('Logout'))
@@ -316,7 +336,7 @@ class _EditProfileState extends State<EditProfile> {
 
   signOut() async {
     await _auth.signOut();
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Loginpage()));
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (ctx) => Loginpage()), (route) => false);
   }
 }
