@@ -43,29 +43,10 @@ class _ComplainPageState extends State<ComplainPage> {
 
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
-<<<<<<< HEAD
     final _imagePicker = ImagePicker();
     PickedFile? image;
     //Check Permissions
     await Permission.photos.request();
-=======
-    //final imageRef = _firebaseStorage.ref("images/${image!.path}");
-    final ref =
-        _firebaseStorage.ref('images/${image!.path.replaceRange(1, 20, '')}');
-    if (image != null) {
-      //Upload to Firebase
-      try {
-        await ref.putFile(image);
-        print('uploaded');
-        //image fetched
-        // await imageRef.getDownloadURL();
-        // setState(() {
-        // var downloadUrl =
-        // setState(() {
-        //   imageUrl = downloadUrl;
-        // });
-        // });
->>>>>>> 868995f51dcac1caeab84a9de37901561c7c8323
 
     var permissionStatus = await Permission.photos.status;
 
