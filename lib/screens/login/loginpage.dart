@@ -19,139 +19,182 @@ class _LoginpageState extends State<Loginpage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final auth = FirebaseAuth.instance;
+  final _formKey = GlobalKey<FormState>();
   String _errorMessage = '';
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-            // ignore: prefer_const_literals_to_create_immutables
-            children: <Widget>[
-              Column(children: <Widget>[
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(8),
-                      child: IconButton(
-                          onPressed: null, icon: Icon(Icons.arrow_back_ios)),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 10, left: 50),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+      body: Stack(children: [
+        AbsorbPointer(
+          absorbing: isLoading,
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: <Widget>[
+                    Column(children: <Widget>[
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(8),
+                            child: IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.arrow_back_ios)),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  children: <Widget>[],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.80,
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
-                    ),
-                    onChanged: (val) {
-                      validateEmail(val);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    _errorMessage,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: <Widget>[],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.80,
-                  child: TextField(
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  width: MediaQuery.of(context).size.width * 0.80,
-                  child: Center(
-                      child: InkWell(
-                    child: Text('Login'),
-                    onTap: () {
-                      try {
-                        auth.signInWithEmailAndPassword(
-                            email: emailController.text.trim(),
-                            password: passwordController.text);
-                      } on FirebaseAuthException catch (e) {
-                        log(e.toString());
-                        CustomDialog(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            content: e.toString());
-                      }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Homepage(),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 10, left: 50),
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        children: <Widget>[],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        width: MediaQuery.of(context).size.width * 0.80,
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email',
+                          ),
+                          onChanged: (val) {
+                            validateEmail(val);
+                          },
+                          validator: (String? value) {
+                            return (value == null || !value.contains('@'))
+                                ? 'enter valid email'
+                                : null;
+                          },
                         ),
-                      );
-                    },
-                  )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          _errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: <Widget>[],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        width: MediaQuery.of(context).size.width * 0.80,
+                        child: TextFormField(
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: true,
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Password',
+                          ),
+                          validator: (String? value) {
+                            return (value == null || value.length < 8)
+                                ? 'password should be strong and more than 7 characters'
+                                : null;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        width: MediaQuery.of(context).size.width * 0.80,
+                        child: Center(
+                            child: InkWell(
+                          child: Text('Login'),
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              // If the form is valid, display a snackbar. In the real world,
+                              // you'd often call a server or save the information in a database.
+                              setState(() {
+                                isLoading = true;
+                              });
+                              try {
+                                auth.signInWithEmailAndPassword(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text);
+                              } on FirebaseAuthException catch (e) {
+                                log(e.toString());
+                                CustomDialog(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    content: e.toString());
+                              }
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => Homepage()),
+                                  (route) => false);
+                            }
+                          },
+                        )),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ]),
+                  ]),
+            ),
+          ),
+        ),
+        isLoading
+            ? Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.amber,
+                  ),
+                  child: Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-              ]),
-            ]),
-      ),
+              )
+            : SizedBox.shrink()
+      ]),
     );
   }
 
   void validateEmail(String val) {
-    if (val.isEmpty) {
+    if (val.isEmpty && !val.contains('@')) {
       setState(() {
-        _errorMessage = "Email can not be empty";
+        _errorMessage = "Email can not be empty or invalid";
       });
     } else if (!EmailValidator.validate(val, true)) {
       setState(() {
