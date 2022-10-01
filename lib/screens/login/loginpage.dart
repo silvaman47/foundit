@@ -63,7 +63,7 @@ class _LoginpageState extends State<Loginpage> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 120,
                       ),
                       Row(
                         children: <Widget>[],
@@ -133,7 +133,10 @@ class _LoginpageState extends State<Loginpage> {
                         width: MediaQuery.of(context).size.width * 0.80,
                         child: Center(
                             child: InkWell(
-                          child: Text('Login'),
+                          child: Text(
+                            'Login',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
@@ -156,7 +159,7 @@ class _LoginpageState extends State<Loginpage> {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (ctx) => Homepage()),
+                                      builder: (ctx) => NavHome()),
                                   (route) => false);
                             }
                           },

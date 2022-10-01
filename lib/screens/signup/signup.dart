@@ -297,7 +297,10 @@ class _SignupState extends State<Signup> {
                           height: MediaQuery.of(context).size.height * 0.10,
                           width: MediaQuery.of(context).size.width * 0.80,
                           child: Center(
-                            child: Text('Create Account'),
+                            child: Text(
+                              'Create Account',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                           decoration: BoxDecoration(
                             color: Colors.blue,

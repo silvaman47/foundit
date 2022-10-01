@@ -22,19 +22,15 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int _selectedIndex = 0;
   final String apiKey = "AK2MyelP411wH8oM1ulNVrAgbH1ROMv0";
   LatLng tomtomHQ = LatLng(6.6854, -1.5707);
-  
+
   //get apiKey => null;
-  void _onItemTapped(int index) {
-
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,113 +41,127 @@ class _HomepageState extends State<Homepage> {
           style: customtextstyle(),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          // ignore: prefer_const_constructors
-          BottomNavigationBarItem(
-            // ignore: prefer_const_constructors
-            icon: Icon(
-              Icons.map,
-              color: Colors.black,
+      body: Stack(children: <Widget>[
+        FlutterMap(
+          options: new MapOptions(
+              center: tomtomHQ,
+              zoom: 18.0,
+              onTap: (value, newLat) {
+                setState(() {
+                  tomtomHQ = newLat;
+                });
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text("Alert"),
+                    content: Text("Lodge complain at this location?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      ComplainPage(latlong: tomtomHQ)));
+                        },
+                        child: Text("Yes"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("No"),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+          layers: [
+            new TileLayerOptions(
+              urlTemplate: "https://api.tomtom.com/map/1/tile/basic/main/"
+                  "{z}/{x}/{y}.png?key={apiKey}",
+              additionalOptions: {"apiKey": apiKey},
             ),
-            label: 'Map',
-            backgroundColor: Colors.blueAccent,
-          ),
-          BottomNavigationBarItem(
-            icon: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ItemScreen(),
-                    ),
-                  );
-                },
-                child: Icon(Icons.add)),
-            label: 'Item',
-            backgroundColor: Colors.blueAccent,
-          ),
-          BottomNavigationBarItem(
-            icon: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfile(),
-                    ),
-                  );
-                },
-                child: Icon(Icons.person)),
-            label: 'Profile',
-            backgroundColor: Colors.blueAccent,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
-      body: Center(
-        child: Stack(children: <Widget>[
-          FlutterMap(
-            options: new MapOptions(
-                center: tomtomHQ,
-                zoom: 18.0,
-                onTap: (value, newLat) {
-                  setState(() {
-                    tomtomHQ = newLat;
-                  });
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text("Alert"),
-                      content: Text("Lodge complain at this location?"),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        ComplainPage(latlong: tomtomHQ)));
-                          },
-                          child: Text("Yes"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("No"),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-            layers: [
-              new TileLayerOptions(
-                urlTemplate: "https://api.tomtom.com/map/1/tile/basic/main/"
-                    "{z}/{x}/{y}.png?key={apiKey}",
-                additionalOptions: {"apiKey": apiKey},
+            new MarkerLayerOptions(markers: [
+              new Marker(
+                  width: 60,
+                  height: 60,
+                  point: tomtomHQ,
+                  builder: (BuildContext context) {
+                    print(tomtomHQ);
+                    return Icon(
+                      Icons.location_on,
+                      size: 60,
+                      color: Colors.black,
+                    );
+                  }),
+            ]),
+          ],
+        ),
+      ]),
+    );
+  }
+}
+
+class NavHome extends StatefulWidget {
+  const NavHome({Key? key}) : super(key: key);
+
+  @override
+  State<NavHome> createState() => _NavHomeState();
+}
+
+class _NavHomeState extends State<NavHome> {
+  final List _children = [
+    Homepage(),
+    ItemScreen(),
+    EditProfile(),
+  ];
+  int _currentIndex = 0;
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: onTabTapped,
+          currentIndex: _currentIndex,
+          selectedItemColor: Colors.black,
+          items: const [
+            BottomNavigationBarItem(
+              // ignore: prefer_const_constructors
+              icon: Icon(
+                Icons.map,
+                color: Colors.black,
               ),
-              new MarkerLayerOptions(markers: [
-                new Marker(
-                    width: 60,
-                    height: 60,
-                    point: tomtomHQ,
-                    builder: (BuildContext context) {
-                      print(tomtomHQ);
-                      return Icon(
-                        Icons.location_on,
-                        size: 60,
-                        color: Colors.black,
-                      );
-                    }),
-              ]),
-            ],
-          ),
-        ]),
-      ),
-      
+              label: 'Map',
+              backgroundColor: Colors.blueAccent,
+            ),
+            BottomNavigationBarItem(
+              // ignore: prefer_const_constructors
+              icon: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+              label: 'Items',
+              backgroundColor: Colors.blueAccent,
+            ),
+            BottomNavigationBarItem(
+              // ignore: prefer_const_constructors
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
+              label: 'Profile',
+              backgroundColor: Colors.blueAccent,
+            ),
+          ]),
     );
   }
 }

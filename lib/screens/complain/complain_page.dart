@@ -38,6 +38,7 @@ class _ComplainPageState extends State<ComplainPage> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
   DateTime? lostDate;
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -261,6 +262,29 @@ class _ComplainPageState extends State<ComplainPage> {
                   SizedBox(
                     height: 20,
                   ),
+                  Container(
+                    margin: EdgeInsets.only(right: 265),
+                    child: Text(
+                      'Number',
+                    ),
+                  ),
+                  SizedBox(
+                    // margin: EdgeInsets.only(right: 290),
+                    //  padding: EdgeInsets.symmetric(horizontal: 100),
+                    width: double.infinity,
+                    height: 40,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: numberController,
+                      decoration: InputDecoration(border: OutlineInputBorder()),
+                      validator: (String? value) {
+                        return value!.isEmpty ? 'empty field' : null;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate() && imageUrl != '') {
@@ -282,7 +306,7 @@ class _ComplainPageState extends State<ComplainPage> {
                             "latitude": widget.latlong.latitude,
                             "longitude": widget.latlong.longitude,
                             "dateTime": lostDate ?? DateTime.now(),
-                            "ownernum": '050484607'
+                            "ownernum": numberController.text.trim(),
                           };
                           await docRef.set(complaint).onError(
                               (error, stackTrace) =>

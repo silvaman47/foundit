@@ -23,13 +23,6 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
   final db = FirebaseFirestore.instance.collection('complaints');
 
   @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -48,24 +41,23 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: Container(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  decoration: BoxDecoration(
-                    color: Colors.amber,
-                    //  shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  //  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
                   ),
+                ),
+                height: 200,
+                width: 400,
+                child: Image(
                   height: 200,
                   width: 400,
-                  child: FittedBox(
-                    child: Image(
-                      height: 200,
-                      width: 400,
-                      image: NetworkImage(widget.lostItem["image"]),
-                      fit: BoxFit.cover,
-                    ),
-                  )),
+                  image: NetworkImage(widget.lostItem["image"]),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             SizedBox(
               height: 50,
@@ -74,16 +66,12 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
               color: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
+              child: ListTile(
+                leading: Text('Location'),
+                trailing: Text(
                   widget.lostItem["location"],
                   style: customtext(),
                 ),
-                height: 100,
-                width: double.infinity,
               ),
             ),
             SizedBox(
@@ -93,15 +81,12 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
               color: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                margin: EdgeInsets.only(right: 70),
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
+              child: ListTile(
+                leading: Text('Email'),
+                trailing: Text(
                   widget.lostItem["owner"],
                   style: customtext(),
                 ),
-                height: MediaQuery.of(context).size.height * 0.10,
-                width: MediaQuery.of(context).size.width * 0.80,
               ),
             ),
             SizedBox(
@@ -111,15 +96,12 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
               color: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                margin: EdgeInsets.only(right: 70),
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
+              child: ListTile(
+                leading: Text('Description'),
+                trailing: Text(
                   widget.lostItem["description"],
                   style: customtext(),
                 ),
-                height: MediaQuery.of(context).size.height * 0.10,
-                width: MediaQuery.of(context).size.width * 0.80,
               ),
             ),
             SizedBox(
@@ -129,12 +111,9 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
               color: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.10,
-                width: MediaQuery.of(context).size.width * 0.80,
-                margin: EdgeInsets.only(right: 70),
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
+              child: ListTile(
+                leading: Text('Date'),
+                trailing: Text(
                   DateFormat('yyyy-MM-dd').format(Timestamp(
                           widget.lostItem['dateTime'].seconds,
                           widget.lostItem['dateTime'].nanoseconds)
@@ -150,16 +129,16 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
               color: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                margin: EdgeInsets.only(right: 70),
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
+              child: ListTile(
+                leading: Text('Number'),
+                trailing: Text(
                   widget.lostItem["ownernum"],
                   style: customtext(),
                 ),
-                height: MediaQuery.of(context).size.height * 0.10,
-                width: MediaQuery.of(context).size.width * 0.80,
               ),
+            ),
+            SizedBox(
+              height: 30,
             ),
             ElevatedButton(
               onPressed: () {
@@ -179,7 +158,7 @@ class _ItemDescriptioPageState extends State<ItemDescriptionPage> {
                                   context,
                                   MaterialPageRoute<void>(
                                       builder: (BuildContext context) =>
-                                          Homepage()),
+                                          NavHome()),
                                   ModalRoute.withName('/'),
                                 );
                               },

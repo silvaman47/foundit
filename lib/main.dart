@@ -5,7 +5,7 @@ import 'package:foundit/screens/home/homepage.dart';
 import 'package:foundit/screens/onboarding/onboarding.dart';
 import 'package:foundit/screens/signup/signup.dart';
 
-Widget defaultRoute = const Homepage();
+Widget defaultRoute = const NavHome();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
